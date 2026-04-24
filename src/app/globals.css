@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #faf6ee;
+  --foreground: #1c1913;
+  --rule: rgba(28, 25, 19, 0.14);
+}
+
+.dark {
+  --background: #0d0b08;
+  --foreground: #f3efe6;
+  --rule: rgba(243, 239, 230, 0.15);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01", "ss02", "cv01";
+}
+
+::selection {
+  background: #c2410c;
+  color: #faf6ee;
+}
+
+/* Editorial rule lines */
+.rule {
+  height: 1px;
+  background: var(--rule);
+}
+
+/* Decorative asterisk divider */
+.asterism::before,
+.asterism::after {
+  content: "✳";
+  opacity: 0.5;
+  margin: 0 0.65em;
+  font-size: 0.85em;
+}
+
+/* Paper texture */
+.paper {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(rgba(28, 25, 19, 0.04) 1px, transparent 1px),
+    radial-gradient(rgba(28, 25, 19, 0.03) 1px, transparent 1px);
+  background-size: 28px 28px, 16px 16px;
+  background-position: 0 0, 14px 14px;
+}
+
+.dark .paper {
+  background-image:
+    radial-gradient(rgba(243, 239, 230, 0.04) 1px, transparent 1px),
+    radial-gradient(rgba(243, 239, 230, 0.03) 1px, transparent 1px);
+}
+
+/* Hand-drawn underline utility */
+.underline-wobble {
+  background-image: linear-gradient(transparent 62%, #c2410c 62%, #c2410c 88%, transparent 88%);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Display heading treatment */
+.display {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.display-italic {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  font-style: italic;
+  letter-spacing: -0.015em;
+}
+
+/* Smooth fade-in for sections */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    animation: reveal 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Editorial number styling for stats */
+.big-num {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  font-feature-settings: "lnum", "pnum";
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+}
+
+/* Bold focus rings for accessibility */
+:focus-visible {
+  outline: 2px solid #c2410c;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Custom scrollbar on editorial feel */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(28, 25, 19, 0.2);
+  border-radius: 10px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(243, 239, 230, 0.18);
+}
