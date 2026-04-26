@@ -148,18 +148,18 @@ export default function GetInvolvedPage() {
               internet. Every franc is reported publicly.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <a
+              <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 bg-clay-500 hover:bg-paper hover:text-ink-900 text-paper px-6 py-3 text-sm font-medium transition-colors"
               >
                 <Heart size={14} /> Talk to us about donating
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 border border-paper/30 px-6 py-3 text-sm font-medium hover:bg-paper hover:text-ink-900 transition-colors"
               >
                 Corporate partnerships
-              </a>
+              </Link>
             </div>
           </div>
           <div className="relative border border-paper/20 p-8 lg:p-10">

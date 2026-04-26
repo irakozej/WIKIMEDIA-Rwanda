@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/data/projects";
@@ -43,18 +44,18 @@ export default function ProjectsPage() {
               and Swahili — the chapter has a place for the hours you can give.
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
-              <a
+              <Link
                 href="/get-involved"
                 className="inline-flex items-center gap-2 bg-ink-900 text-paper px-5 py-3 text-sm font-medium shadow-brutal-sm hover:bg-clay-500 transition-colors"
               >
                 Join a project →
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 border border-ink-900/25 px-5 py-3 text-sm font-medium hover:border-ink-900 transition-colors"
               >
                 Propose a partnership
-              </a>
+              </Link>
             </div>
           </div>
         </div>
