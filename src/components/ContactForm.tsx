@@ -1,25 +1,41 @@
 "use client";
 
 import { useState } from "react";
-import { Send, Check } from "lucide-react";
+import { Send, Check, AlertCircle } from "lucide-react";
+import { submitForm, type FormStatus } from "@/lib/forms";
 
 export default function ContactForm() {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("sending");
+    const data = new FormData(e.currentTarget);
+    const result = await submitForm({
+      subject: `[wikimedia.rw] ${data.get("subject") ?? "New contact"}`,
+      from_name: data.get("name"),
+      replyto: data.get("email"),
+      message: data.get("message"),
+      _form: "contact",
+    });
+    setStatus(result);
+  }
+
+  const sending = status === "sending";
+  const sent = status === "sent";
+  const errored = status === "error";
 
   return (
     <form
       className="bg-paper border border-ink-900/15 p-6 lg:p-10 shadow-brutal-sm"
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSent(true);
-      }}
+      onSubmit={onSubmit}
     >
       <div className="grid gap-6 md:grid-cols-2">
-        <Field label="Your name" id="name" placeholder="Uwimana Mutesi" />
-        <Field label="Email" id="email" type="email" placeholder="you@example.rw" />
+        <Field label="Your name" id="name" name="name" placeholder="Uwimana Mutesi" />
+        <Field label="Email" id="email" name="email" type="email" placeholder="you@example.rw" />
       </div>
       <div className="mt-6">
-        <Field label="Subject" id="subject" placeholder="Partnership, press, question…" />
+        <Field label="Subject" id="subject" name="subject" placeholder="Partnership, press, question…" />
       </div>
       <div className="mt-6">
         <label htmlFor="message" className="text-[11px] uppercase tracking-[0.22em] text-ink-700">
@@ -27,6 +43,7 @@ export default function ContactForm() {
         </label>
         <textarea
           id="message"
+          name="message"
           rows={6}
           required
           placeholder="Tell us what's on your mind…"
@@ -35,18 +52,27 @@ export default function ContactForm() {
       </div>
       <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
         <p className="text-xs text-ink-600">
-          We typically reply within 3 working days. Murakoze.
+          {errored
+            ? "Something went wrong. Try again, or email wikimediarwanda@gmail.com."
+            : "We typically reply within 3 working days. Murakoze."}
         </p>
         <button
           type="submit"
-          disabled={sent}
-          className="inline-flex items-center gap-2 bg-ink-900 hover:bg-clay-500 text-paper px-6 py-3 text-sm font-medium shadow-brutal-sm disabled:bg-forest-500"
+          disabled={sending || sent}
+          className="inline-flex items-center gap-2 bg-ink-900 hover:bg-clay-500 text-paper px-6 py-3 text-sm font-medium shadow-brutal-sm disabled:bg-forest-500 disabled:opacity-95"
         >
-          {sent ? (
+          {sent && (
             <>
               <Check size={14} /> Message sent
             </>
-          ) : (
+          )}
+          {sending && <>Sending…</>}
+          {errored && (
+            <>
+              <AlertCircle size={14} /> Try again
+            </>
+          )}
+          {status === "idle" && (
             <>
               Send message <Send size={14} />
             </>
@@ -60,11 +86,13 @@ export default function ContactForm() {
 function Field({
   label,
   id,
+  name,
   type = "text",
   placeholder,
 }: {
   label: string;
   id: string;
+  name: string;
   type?: string;
   placeholder?: string;
 }) {
@@ -75,6 +103,7 @@ function Field({
       </label>
       <input
         id={id}
+        name={name}
         type={type}
         required
         placeholder={placeholder}

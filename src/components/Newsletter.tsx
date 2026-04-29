@@ -1,11 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { Send, Check } from "lucide-react";
+import { Send, Check, AlertCircle } from "lucide-react";
+import { submitForm, type FormStatus } from "@/lib/forms";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!email) return;
+    setStatus("sending");
+    const result = await submitForm({
+      subject: "[wikimedia.rw] Newsletter signup",
+      replyto: email,
+      message: `New newsletter signup: ${email}`,
+      _form: "newsletter",
+    });
+    setStatus(result);
+  }
+
+  const sending = status === "sending";
+  const sent = status === "sent";
+  const errored = status === "error";
 
   return (
     <section className="relative border-y border-ink-900/15">
@@ -24,10 +42,7 @@ export default function Newsletter() {
         </div>
 
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (email) setSent(true);
-          }}
+          onSubmit={onSubmit}
           className="relative bg-[#1c1913] text-paper p-6 lg:p-8 shadow-brutal-clay"
         >
           <label htmlFor="newsletter" className="text-[11px] uppercase tracking-[0.22em] text-paper/60">
@@ -45,24 +60,31 @@ export default function Newsletter() {
             />
             <button
               type="submit"
-              disabled={sent}
-              className="inline-flex items-center justify-center gap-2 bg-clay-500 text-paper px-5 py-3 text-sm font-medium disabled:bg-forest-500 disabled:opacity-90"
+              disabled={sending || sent}
+              className="inline-flex items-center justify-center gap-2 bg-clay-500 text-paper px-5 py-3 text-sm font-medium disabled:bg-forest-500 disabled:opacity-95"
             >
-              {sent ? (
+              {sent && (
                 <>
-                  <Check size={14} />
-                  Subscribed
+                  <Check size={14} /> Subscribed
                 </>
-              ) : (
+              )}
+              {sending && <>Sending…</>}
+              {errored && (
                 <>
-                  <Send size={14} />
-                  Subscribe
+                  <AlertCircle size={14} /> Try again
+                </>
+              )}
+              {status === "idle" && (
+                <>
+                  <Send size={14} /> Subscribe
                 </>
               )}
             </button>
           </div>
           <p className="mt-4 text-xs text-paper/50">
-            We will never share your address. Unsubscribe any time.
+            {errored
+              ? "Submission failed. Please try again."
+              : "We will never share your address. Unsubscribe any time."}
           </p>
         </form>
       </div>

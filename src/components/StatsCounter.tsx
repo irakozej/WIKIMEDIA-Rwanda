@@ -93,7 +93,7 @@ function StatCell({
       </div>
       <div className="mt-3 font-display text-xl text-paper">{stat.label}</div>
       <div className="mt-1 text-sm text-paper/60">{stat.context}</div>
-      <div className="absolute top-6 right-6 font-mono text-[11px] tracking-[0.25em] text-paper/30">
+      <div className="absolute top-6 right-6 font-mono text-[11px] tracking-[0.25em] text-paper/55">
         #{String(index + 1).padStart(2, "0")}
       </div>
     </li>

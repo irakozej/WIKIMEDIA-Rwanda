@@ -91,31 +91,30 @@ export default function ContactPage() {
         <div className="space-y-8">
           <ContactForm />
 
-          <div className="relative aspect-[16/10] border border-ink-900/15 overflow-hidden">
-            <div className="absolute inset-0 bg-[#1c1913]" />
-            <div
-              className="absolute inset-0 opacity-60"
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, rgba(250,246,238,0.08) 1px, transparent 1px), linear-gradient(0deg, rgba(250,246,238,0.08) 1px, transparent 1px)",
-                backgroundSize: "40px 40px",
-              }}
+          <div className="relative aspect-[16/10] border border-ink-900/15 overflow-hidden bg-[#1c1913]">
+            <iframe
+              title="Wikimedia Rwanda — Town Center Building, Kacyiru"
+              src="https://www.google.com/maps?q=Town+Center+Building+Kacyiru+Kigali&output=embed"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="absolute inset-0 h-full w-full grayscale-[0.2] contrast-[1.05]"
+              allowFullScreen
             />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_45%,rgba(194,65,12,0.5),transparent_60%)]" />
-            <div className="absolute top-1/2 left-[60%] -translate-x-1/2 -translate-y-1/2">
-              <div className="relative">
-                <span className="absolute inset-0 animate-ping rounded-full bg-clay-500/60" />
-                <span className="relative block h-4 w-4 rounded-full bg-clay-500 shadow-[0_0_0_6px_rgba(194,65,12,0.3)]" />
+            <div className="pointer-events-none absolute bottom-0 left-0 right-0 flex items-end justify-between p-4 bg-gradient-to-t from-[#1c1913]/80 to-transparent text-paper">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-clay-300">
+                  Kigali · Kacyiru
+                </div>
+                <div className="mt-1 font-display text-xl">5th Floor, Town Center Building</div>
               </div>
-            </div>
-            <div className="absolute bottom-5 left-5 text-paper">
-              <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-clay-300">
-                Kigali · Kacyiru
-              </div>
-              <div className="mt-1 font-display text-2xl">-1.9441° S · 30.0619° E</div>
-            </div>
-            <div className="absolute top-5 right-5 font-mono text-[10px] uppercase tracking-[0.25em] text-paper/50">
-              Map placeholder
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination=Town+Center+Building+Kacyiru+Kigali"
+                target="_blank"
+                rel="noreferrer"
+                className="pointer-events-auto inline-flex items-center gap-2 bg-clay-500 px-3 py-2 text-xs hover:bg-paper hover:text-ink-900 transition-colors"
+              >
+                Get directions →
+              </a>
             </div>
           </div>
         </div>

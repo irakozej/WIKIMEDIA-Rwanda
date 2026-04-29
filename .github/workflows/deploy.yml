@@ -30,13 +30,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Type-check
+        run: npx tsc --noEmit
+
       - name: Build (Next.js static export)
         run: npm run build
         env:
           NODE_ENV: production
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
+          NEXT_PUBLIC_WEB3FORMS_KEY: ${{ secrets.WEB3FORMS_KEY }}
+          NEXT_PUBLIC_PLAUSIBLE_DOMAIN: ${{ vars.PLAUSIBLE_DOMAIN }}
 
       - name: Disable Jekyll
         run: touch ./out/.nojekyll
+
+      - name: Add .png extension to OG image so GitHub Pages serves it correctly
+        run: |
+          if [ -f out/opengraph-image ]; then
+            mv out/opengraph-image out/opengraph-image.png
+            find out -name "*.html" -exec sed -i 's|opengraph-image?|opengraph-image.png?|g' {} \;
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
